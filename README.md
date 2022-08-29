@@ -35,7 +35,3 @@ someId: {
 ```
 
 for `#some-id` respectively.
-
-### Why C? This can take an hour in Python [or inser other language]
-
-Because I like C, and I'm rusty and because I damn well feel like it.
