@@ -10,7 +10,12 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 #define MAX_ID_LENGTH 32
+/* ASCII values */
+#define CHAR_TAB 9
+#define CHAR_LINE_BREAK 10
+#define CHAR_RETURN 13
 
 /* --- type definitions and constants --------------------------------------- */
 
@@ -50,7 +55,7 @@ static char *token_names[] = {
 /* --- function prototypes -------------------------------------------------- */
 
 const char *get_token_string(TokenType type);
-static void process_identifier(Token *token);
+void process_identifier(Token *token);
 void init_scanner(FILE *in_file);
 
 /* --- scanner interface ---------------------------------------------------- */
@@ -66,7 +71,7 @@ void init_scanner(FILE *in_file) {
 void next_char() {
     ch = fgetc(src_file);
     col += 1;
-    if (ch == 10) {
+    if (ch == CHAR_LINE_BREAK || ch == CHAR_RETURN) {
         ln += 1;
         col = 0;
     }
