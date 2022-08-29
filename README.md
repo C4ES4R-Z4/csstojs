@@ -1,4 +1,4 @@
-# CSSTOJS
+# (WIP) CSSTOJS
 
 An personal exercise in C, for an application that converts _some_ CSS into the JS CSS styling for React.
 This project is very basic and doesn't yet do much.
