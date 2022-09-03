@@ -1,3 +1,5 @@
+
+
 class Scanner:
     # Class variables
     file = None
@@ -5,7 +7,7 @@ class Scanner:
     table = {}
     line_number = 1
     column_number = 0
-    
+
     # Constructor (initialises)
     def __init__(self, file):
         try:
@@ -23,45 +25,43 @@ class Scanner:
             self.read_char()
         elif (self.ch == "\n"):
             self.line_number += 1
+            self.column_number = 0
             self.read_char()
 
-    # Process class names
-    def process_class(self):
-        identifer = []
-        while (self.ch.isalnum() or self.ch == "." and self.ch):
-            identifer.append(self.ch)
+    # parse through the file
+    def scan(self, *args):
+        while (True):
             self.read_char()
-        self.table["".join(identifer)] = ""
-        self.process_properties("".join(identifer))
+            # Process the symbols/tokens
+            if (self.ch.isalpha() or self.ch == "." or self.ch == "#"):
+                self.process_identifier()
+            # When EOF break
+            if (self.ch == ""):
+                break
 
-    # Process properties and settings
-    def process_properties(self, identifier):
-        properties = []
-        if (self.ch != "{"):
-            print(f"[E] (Ln:{self.line_number}, Col:{self.column_number}) {'{'} expected")
-            exit()
-        while (True):
-            if (not self.ch):
-                print(f"[E]")
-            properties.append(self.ch)
-            if (self.ch == "}"):
-                break
+    # porcessing an identifier
+    def process_identifier(self):
+        identity = []
+        while(self.ch != "{" and self.ch != ""):
+            identity.append(self.ch)
             self.read_char()
-        self.table[identifier] = "".join(properties)[1:-1].split(";")
-        
-    # loop through file
-    def read_all(self, id):
-        while (True):
+            if (self.ch == "" or not self.ch.isalnum):
+                print(f"[E] at (Ln:{self.line_number},Col:{self.column_number}) expected 1")
+        self.read_char()
+        identifier = "".join(identity)
+        print(identifier)
+        # skip the properties for now (testing)
+        # TODO: remove later
+        legal = ["-", ":", ";", "%"]
+        while(self.ch != "}"):
+            if (self.ch == "" or not (self.ch.isalnum() or self.ch in legal)):
+                print(f"[E] at (Ln:{self.line_number},Col:{self.column_number}) expected 2")
             self.read_char()
-            if (not self.ch):
-                break
-            elif (self.ch == "."):
-                self.process_class();
-        print(self.table)
-        
+
+
 
 
 if __name__ == "__main__":
     sc = Scanner(input("Enter the file to be scanned -->"))
     identifier = input("which identifier? -->")
-    sc.read_all(identifier)
+    sc.scan(identifier)
